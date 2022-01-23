@@ -81,8 +81,8 @@ while( cap.isOpened() ): #カメラが使える限りループ
     #cv2.circle(frame,(int(center[tbi][0]),int(center[tbi][1])),10,(255,0,0),3)
 
 #最大ブロブの中心に画像を貼り付ける
-    #icondata="./ojigi_animal_inu.png"
-    icondata="./198.jpg"#←↑画像のあるパスを定義
+    icondata="./ojigi_animal_inu.png"
+    #icondata="./198.jpg"#←↑画像のあるパスを定義
     icon=cv2.imread(icondata,-1)#画像読み込み
     h, w  = icon.shape[:2]#貼り付ける画像の整形
     icon=cv2.resize(icon,(int(w),int(h)))#サイズ変更   
