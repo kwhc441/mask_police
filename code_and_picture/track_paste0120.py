@@ -90,7 +90,8 @@ while( cap.isOpened() ): #カメラが使える限りループ
     if blob_count>=1:
         icon = cv2.imread(icondata, -1)  # 画像読み込み
         #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
-        x, y = 400, 0
+        icon=cv2.resize(icon,dsize=(10,10))
+        x, y = int(center[tbi][0]), int(center[tbi][1])
         frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
 
 
