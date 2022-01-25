@@ -24,10 +24,14 @@ def merge_images(bg, fg_alpha, s_x, s_y):
     fg = fg_alpha[:,:,:3]
 
     f_h, f_w, _ = fg.shape # アルファ画像の高さと幅を取得
-    b_h, b_w, _ = bg.shape # 背景画像の高さを幅を取得
+    b_h, b_w, _ = bg.shape  # 背景画像の高さを幅を取得
+    #f_h, f_w, _ = b_h, b_w, _
+    #print(f"fh:{f_h}\nfw:{f_w}\nbh:{b_h}\nbw:{b_w}")
+
+   
+    
     bg[s_y:f_h+s_y, s_x:f_w+s_x] = (bg[s_y:f_h+s_y, s_x:f_w+s_x] * (1.0 - alpha)).astype('uint8') # アルファ以外の部分を黒で合成
     bg[s_y:f_h+s_y, s_x:f_w+s_x] = (bg[s_y:f_h+s_y, s_x:f_w+s_x] + (fg * alpha)).astype('uint8')  # 合成
-
     return bg
 
 
@@ -69,7 +73,7 @@ while( cap.isOpened() ): #カメラが使える限りループ
 #領域のカタマリである「ブロブ」を識別し、データを格納する。すごくありがたい機能。
     nLabels, labelimages, data, center = cv2.connectedComponentsWithStats(frame_np)
 
-    blob_count = nLabels - 1 #ブロブの数。画面領域全体を1つのブロブとしてカウントするので、-1する。
+    blob_count = nLabels - 1 #ブロブの数。画面領域全体を1つのブロブとしてカウントするので、-1する。1以上で色を認識
 
     if blob_count >= 1: #ブロブが1つ以上存在すれば、画面全体を示すブロブデータを削除。
         data = np.delete(data, 0, 0)
@@ -83,11 +87,11 @@ while( cap.isOpened() ): #カメラが使える限りループ
     
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
     zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
-    if zahyo !=(319,239):
+    if blob_count>=1:
         icon = cv2.imread(icondata, -1)  # 画像読み込み
-        h, w = icon.shape[:2]  # 貼り付ける画像の整形
-        icon = cv2.resize(icon, (int(w), int(h)))  # サイズ変更
-        frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
+        #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
+        x, y = 400, 0
+        frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
 
 
 #画像を表示する
