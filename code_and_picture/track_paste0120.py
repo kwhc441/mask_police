@@ -64,7 +64,7 @@ def green_range(img): #緑色の領域をマスクする関数
     return mask
 """
 icondata = "code_and_picture/ojigi_animal_inu.png"
-#icondata="code_and_picture\\198.jpg"#←↑画像のあるパスを定義
+#icondata="code_and_picture\\198.jpg"
 while( cap.isOpened() ): #カメラが使える限りループ
 
     ret, frame = cap.read() #カメラの情報を取得。frameに640x480x3の配列データが入る。
@@ -87,12 +87,16 @@ while( cap.isOpened() ): #カメラが使える限りループ
     
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
     zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
-    if blob_count>=1:
-        icon = cv2.imread(icondata, -1)  # 画像読み込み
-        #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
-        icon=cv2.resize(icon,dsize=(10,10))#貼り付け画像のサイズ変更
-        x, y = int(center[tbi][0]), int(center[tbi][1])
-        frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
+    try:
+        if blob_count>=1:
+            icon = cv2.imread(icondata, -1)  # 画像読み込み
+            #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
+            icon=cv2.resize(icon,dsize=(10,10))#貼り付け画像のサイズ変更
+            x, y = int(center[tbi][0]), int(center[tbi][1])
+            frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
+        #cv2.imshow('RaspiCam_Live', frame)
+    except:
+        ret,frame=cap.read()
 
 
 #画像を表示する
