@@ -73,14 +73,15 @@ def green_range(img): #緑色の領域をマスクする関数
 
     return mask
 """
-icondata = "code_and_picture/ojigi_animal_inu.png"
+#icondata = "code_and_picture/ojigi_animal_inu.png"
 #icondata="code_and_picture\\198.jpg"
-
+icondata = "code_and_picture/daikiti.jpg"
 
 while( cap.isOpened() ): #カメラが使える限りループ
 
     ret, frame = cap.read() #カメラの情報を取得。frameに640x480x3の配列データが入る。
     frame_np = red_range(np.array(frame)) #frameデータをnp配列に変換。
+    
 
 #領域のカタマリである「ブロブ」を識別し、データを格納する。すごくありがたい機能。
     nLabels, labelimages, data, center = cv2.connectedComponentsWithStats(frame_np)
@@ -99,7 +100,7 @@ while( cap.isOpened() ): #カメラが使える限りループ
     
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
     #zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
-    zahyo=(320,300)
+    zahyo=(160,200)
     #zahyo=(0,0)
     #カメラ映像の幅などを取得するコード
 # 幅
@@ -115,13 +116,13 @@ while( cap.isOpened() ): #カメラが使える限りループ
             x,y=zahyo
             frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:icon.shape[0], :icon.shape[1], :3]
         #cv2.imshow('RaspiCam_Live', frame)
-    except Exception as e:
-        raise e
+    except :
         ret,frame=cap.read()
 
 
-#画像を表示する
+#画像を表示する&画面を移動
     cv2.imshow('RaspiCam_Live',frame)
+    cv2.moveWindow('RaspiCam_Live', 320, 240)
 
 #キーが押されたら終了する
     if cv2.waitKey(1) != -1:
