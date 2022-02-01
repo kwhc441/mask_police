@@ -76,7 +76,7 @@ def green_range(img): #緑色の領域をマスクする関数
 #icondata = "code_and_picture/ojigi_animal_inu.png"
 #icondata="code_and_picture\\198.jpg"
 icondata = "code_and_picture/daikiti.jpg"
-
+icondatas = ["code_and_picture/kyo.jpg", "code_and_picture/tyukiti.jpg", "code_and_picture/daikiti.jpg"]
 while( cap.isOpened() ): #カメラが使える限りループ
 
     ret, frame = cap.read() #カメラの情報を取得。frameに640x480x3の配列データが入る。
@@ -99,8 +99,8 @@ while( cap.isOpened() ): #カメラが使える限りループ
     #cv2.circle(frame,(int(center[tbi][0]),int(center[tbi][1])),10,(255,0,0),3)
     
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
-    #zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
-    zahyo=(160,200)
+    zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
+    #zahyo=(160,200)
     #zahyo=(0,0)
     #カメラ映像の幅などを取得するコード
 # 幅
@@ -123,6 +123,8 @@ while( cap.isOpened() ): #カメラが使える限りループ
 #画像を表示する&画面を移動
     cv2.imshow('RaspiCam_Live',frame)
     cv2.moveWindow('RaspiCam_Live', 320, 240)
+    #cv2.moveWindow('RaspiCam_Live', int((1920-640)/2), int(1080-480))#本番用
+
 
 #キーが押されたら終了する
     if cv2.waitKey(1) != -1:
