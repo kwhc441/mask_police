@@ -15,6 +15,16 @@ def red_range(img): #赤色の領域をマスクする関数
 
     return mask
 
+#カメラ映像の幅などを取得するコード
+# 幅
+vidwide = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+# 高さ
+vidhit = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+# 総フレーム数
+count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+# fps
+fps = cap.get(cv2.CAP_PROP_FPS)
+
 #画像を張り付けるコード
 def merge_images(bg, fg_alpha, s_x, s_y):
     alpha = fg_alpha[:,:,3]  # アルファチャンネルだけ抜き出す(要は2値のマスク画像)
@@ -65,6 +75,8 @@ def green_range(img): #緑色の領域をマスクする関数
 """
 icondata = "code_and_picture/ojigi_animal_inu.png"
 #icondata="code_and_picture\\198.jpg"
+
+
 while( cap.isOpened() ): #カメラが使える限りループ
 
     ret, frame = cap.read() #カメラの情報を取得。frameに640x480x3の配列データが入る。
@@ -88,16 +100,23 @@ while( cap.isOpened() ): #カメラが使える限りループ
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
     #zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
     zahyo=(320,300)
+    #zahyo=(0,0)
+    #カメラ映像の幅などを取得するコード
+# 幅
+    vidwide = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+# 高さ
+    vidhit = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
     try:
         if blob_count>=1:
             icon = cv2.imread(icondata, -1)  # 画像読み込み
             #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
-            icon=cv2.resize(icon,dsize=(10,10))#貼り付け画像のサイズ変更
+            icon=cv2.resize(icon,dsize=(int(vidwide*0.4),int(vidhit*0.3)))#貼り付け画像のサイズ変更
             #x, y = int(center[tbi][0]), int(center[tbi][1])#トラッキング
             x,y=zahyo
-            frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
+            frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:icon.shape[0], :icon.shape[1], :3]
         #cv2.imshow('RaspiCam_Live', frame)
-    except:
+    except Exception as e:
+        raise e
         ret,frame=cap.read()
 
 
