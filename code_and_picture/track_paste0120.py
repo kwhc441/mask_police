@@ -86,13 +86,15 @@ while( cap.isOpened() ): #カメラが使える限りループ
     #cv2.circle(frame,(int(center[tbi][0]),int(center[tbi][1])),10,(255,0,0),3)
     
 #座標が中心でない時に最大ブロブの中心に画像を貼り付ける
-    zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
+    #zahyo = ((int(center[tbi][0]), int(center[tbi][1])))
+    zahyo=(320,300)
     try:
         if blob_count>=1:
             icon = cv2.imread(icondata, -1)  # 画像読み込み
             #frame = merge_images(frame, icon, int(center[tbi][0]), int(center[tbi][1]))  # 画像を中心に貼り付け
             icon=cv2.resize(icon,dsize=(10,10))#貼り付け画像のサイズ変更
-            x, y = int(center[tbi][0]), int(center[tbi][1])
+            #x, y = int(center[tbi][0]), int(center[tbi][1])#トラッキング
+            x,y=zahyo
             frame[y:icon.shape[0] + y, x:icon.shape[1] + x] = icon[:, :, :3]
         #cv2.imshow('RaspiCam_Live', frame)
     except:
